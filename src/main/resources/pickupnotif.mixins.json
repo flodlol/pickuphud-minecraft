@@ -4,9 +4,11 @@
   "package": "kotleni.pickupnotif.mixin",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "PlayerInventoryMixin"
+    "PlayerInventoryMixin",
+    "ItemEntityMixin"
   ],
   "mixins": [
+
   ],
   "injectors": {
     "defaultRequire": 1

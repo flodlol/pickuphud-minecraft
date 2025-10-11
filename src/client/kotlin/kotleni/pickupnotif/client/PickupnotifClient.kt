@@ -4,6 +4,7 @@ import kotleni.pickupnotif.ItemPickupCallback
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
+import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemStack
 
 class PickupnotifClient : ClientModInitializer {
@@ -11,18 +12,19 @@ class PickupnotifClient : ClientModInitializer {
     private val pickupsManager = PickupsManager();
 
     override fun onInitializeClient() {
+        // client.player?.on
         HudRenderCallback.EVENT.register { drawContext, tickCounter ->
             PickupsMessagesRenderer.render(drawContext, client.textRenderer, pickupsManager.allPickups)
         }
 
-        ItemPickupCallback.EVENT?.register { stack ->
+        ItemPickupCallback.EVENT?.register { player, stack ->
             client.execute {
-                onPickupItem(stack)
+                onPickupItem(player, stack)
             }
         }
     }
 
-    private fun onPickupItem(stack: ItemStack) {
+    private fun onPickupItem(player: PlayerEntity, stack: ItemStack) {
         val totalCount = client.player?.inventory
             ?.toList()
             ?.filter { it.itemName == stack.itemName }
