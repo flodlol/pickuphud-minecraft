@@ -3,12 +3,15 @@
   "id": "pickuphud",
   "version": "${version}",
   "name": "Pickup HUD",
-  "description": "Showing items and xp orbs on pickup in HUD.",
+  "description": "Displaying (in HUD) information about picked up items and experience.",
   "authors": [
     "kotleni"
   ],
   "contact": {
-    "mail" : "yavarenikya@gmail.com"
+    "email" : "yavarenikya@gmail.com",
+    "homepage" : "https://github.com/kotleni/pickuphud-minecraft",
+    "sources" : "https://github.com/kotleni/pickuphud-minecraft",
+    "issues" : "https://github.com/kotleni/pickuphud-minecraft/issues"
   },
   "license": "GPL-2.0",
   "icon": "icon.png",
@@ -36,5 +39,14 @@
     "fabric-language-kotlin": ">=${kotlin_loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "custom" : {
+    "modmenu" : {
+      "links" : {
+        "github" : "https://github.com/kotleni/pickuphud-minecraft",
+        "discord" : "https://discord.gg/TXwQXBWR"
+      },
+      "update_checker": true
+    }
   }
 }
