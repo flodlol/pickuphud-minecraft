@@ -2,10 +2,19 @@ package kotleni.pickupnotif.client
 
 import net.minecraft.item.ItemStack
 
-data class PickupMessage(
-    val itemName: String,
-    var itemCount: Int,
-    var itemsTotal: Int,
-    var createTime: Long,
-    val stack: ItemStack
-)
+sealed class PickupMessage(
+    var createTime: Long
+) {
+    data class Item(
+        val stack: ItemStack,
+        var increaseCount: Int,
+        val totalCount: Int,
+        val messageCreateTime: Long
+    ): PickupMessage(messageCreateTime)
+
+    data class ExperienceOrb(
+        var increaseCount: Int,
+        val totalCount: Int,
+        val messageCreateTime: Long
+    ): PickupMessage(messageCreateTime)
+}

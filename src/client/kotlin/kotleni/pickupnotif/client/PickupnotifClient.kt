@@ -1,5 +1,6 @@
 package kotleni.pickupnotif.client
 
+import kotleni.pickupnotif.ExperienceOrbPickupCallback
 import kotleni.pickupnotif.ItemPickupCallback
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
@@ -22,6 +23,12 @@ class PickupnotifClient : ClientModInitializer {
                 onPickupItem(player, stack)
             }
         }
+
+        ExperienceOrbPickupCallback.EVENT?.register { player, experience ->
+            client.execute {
+                onPickupExperienceOrb(player, experience)
+            }
+        }
     }
 
     private fun onPickupItem(player: PlayerEntity, stack: ItemStack) {
@@ -31,6 +38,11 @@ class PickupnotifClient : ClientModInitializer {
             ?.map { it.count }
             ?.reduce { a, b -> a + b } ?: -1
 
-        pickupsManager.addPickup(stack, totalCount);
+        pickupsManager.addItemPickup(stack, totalCount);
+    }
+
+    private fun onPickupExperienceOrb(player: PlayerEntity, experience: Int) {
+        val totalCount = player.totalExperience
+        pickupsManager.addExperiencePickup(experience, totalCount)
     }
 }

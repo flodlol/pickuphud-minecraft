@@ -11,20 +11,38 @@ class PickupsManager {
         pickupMessages.removeIf { System.currentTimeMillis() - it.createTime >= 2000 }
     }
 
-    fun addPickup(stack: ItemStack, totalItemsOfThisType: Int) {
+    fun addItemPickup(stack: ItemStack, totalItemsOfThisType: Int) {
         cleanup()
 
-        val prevMessage = pickupMessages.find { it.itemName == stack.itemName.string }
+        val prevMessage = pickupMessages.filter { it is PickupMessage.Item }
+            .find { (it as PickupMessage.Item).stack.itemName == stack.itemName } as? PickupMessage.Item?
+
         if(prevMessage != null) {
-            prevMessage.itemCount += stack.count;
-            prevMessage.createTime = System.currentTimeMillis();
+            prevMessage.increaseCount += stack.count
+            prevMessage.createTime = System.currentTimeMillis()
         } else {
-            pickupMessages.add(PickupMessage(
-                stack.name.string,
+            pickupMessages.add(PickupMessage.Item(
+                stack,
                 stack.count,
                 totalItemsOfThisType,
                 System.currentTimeMillis(),
-                stack
+            ))
+        }
+    }
+
+    fun addExperiencePickup(experience: Int, totalCount: Int) {
+        cleanup()
+
+        val prevMessage = pickupMessages.find { it is PickupMessage.ExperienceOrb } as? PickupMessage.ExperienceOrb?
+
+        if(prevMessage != null) {
+            prevMessage.increaseCount += experience
+            prevMessage.createTime = System.currentTimeMillis()
+        } else {
+            pickupMessages.add(PickupMessage.ExperienceOrb(
+                experience,
+                totalCount,
+                System.currentTimeMillis(),
             ))
         }
     }
