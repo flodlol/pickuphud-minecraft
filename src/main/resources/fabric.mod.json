@@ -1,13 +1,17 @@
 {
   "schemaVersion": 1,
-  "id": "pickupnotif",
+  "id": "pickuphud",
   "version": "${version}",
-  "name": "pickupnotif",
-  "description": "",
-  "authors": [],
-  "contact": {},
-  "license": "All-Rights-Reserved",
-  "icon": "assets/pickupnotif/icon.png",
+  "name": "Pickup HUD",
+  "description": "Showing items and xp orbs on pickup in HUD.",
+  "authors": [
+    "kotleni"
+  ],
+  "contact": {
+    "mail" : "yavarenikya@gmail.com"
+  },
+  "license": "GPL-2.0",
+  "icon": "icon.png",
   "environment": "client",
   "entrypoints": {
     "fabric-datagen": [
