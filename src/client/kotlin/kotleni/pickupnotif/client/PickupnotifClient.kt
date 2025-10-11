@@ -49,7 +49,8 @@ data class PickupMessage(
     val itemName: String,
     var itemCount: Int,
     var itemsTotal: Int,
-    var createTime: Long
+    var createTime: Long,
+    val stack: ItemStack
 )
 
 class PickupnotifClient : ClientModInitializer {
@@ -60,12 +61,23 @@ class PickupnotifClient : ClientModInitializer {
         HudRenderCallback.EVENT.register { drawContext, tickCounter ->
             pickupMessages.forEachIndexed { index, message ->
                 if(System.currentTimeMillis() - message.createTime > 2000) return@forEachIndexed
+
+                val line = "${message.itemName} +${message.itemCount} (${message.itemsTotal})"
+                val margin = 16
+                val padding = 6
+                val width = client.inGameHud.textRenderer.getWidth(line)
+                val height = client.inGameHud.textRenderer.fontHeight
+
+                val x = drawContext.scaledWindowWidth - width - padding
+                val y = drawContext.scaledWindowHeight - height - (margin * index) - padding - 6
+
+                drawContext.drawItem(message.stack, x - 20, y)
                 drawContext.drawText(
                     client.inGameHud.textRenderer,
-                    "${message.itemName} +${message.itemCount} (${message.itemsTotal})",
-                    40,
-                    40 + (10 * index),
-                    Colors.ALTERNATE_WHITE,
+                    line,
+                    x,
+                    y + (height / 2),
+                    Colors.WHITE,
                     false
                 );
             }
@@ -95,7 +107,8 @@ class PickupnotifClient : ClientModInitializer {
                 stack.name.string,
                 stack.count,
                 totalCount,
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
+                stack
             ))
         }
     }
