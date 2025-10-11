@@ -8,13 +8,13 @@ sealed class PickupMessage(
     data class Item(
         val stack: ItemStack,
         var increaseCount: Int,
-        val totalCount: Int,
+        var totalCount: Int,
         val messageCreateTime: Long
     ): PickupMessage(messageCreateTime)
 
     data class ExperienceOrb(
         var increaseCount: Int,
-        val totalCount: Int,
+        var totalCount: Int,
         val messageCreateTime: Long
     ): PickupMessage(messageCreateTime)
 }

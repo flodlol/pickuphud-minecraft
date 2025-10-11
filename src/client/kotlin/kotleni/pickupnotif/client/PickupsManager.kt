@@ -19,6 +19,7 @@ class PickupsManager {
 
         if(prevMessage != null) {
             prevMessage.increaseCount += stack.count
+            prevMessage.totalCount = totalItemsOfThisType
             prevMessage.createTime = System.currentTimeMillis()
         } else {
             pickupMessages.add(PickupMessage.Item(
@@ -37,6 +38,7 @@ class PickupsManager {
 
         if(prevMessage != null) {
             prevMessage.increaseCount += experience
+            prevMessage.totalCount = totalCount
             prevMessage.createTime = System.currentTimeMillis()
         } else {
             pickupMessages.add(PickupMessage.ExperienceOrb(
