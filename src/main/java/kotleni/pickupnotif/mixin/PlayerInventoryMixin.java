@@ -9,12 +9,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerInventory.class)
-public abstract class ItemEntityMixin {
+public abstract class PlayerInventoryMixin {
     @Inject(
-            method = "insertStack(Lnet/minecraft/item/ItemStack;)Z",
-            at = @At("TAIL")
+            method = "insertStack(ILnet/minecraft/item/ItemStack;)Z",
+            at = @At("RETURN")
     )
-    private void onItemPickup(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
+    private void insertStack(int slot, ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
         ItemPickupCallback.EVENT.invoker().onPickup(stack);
     }
 }
