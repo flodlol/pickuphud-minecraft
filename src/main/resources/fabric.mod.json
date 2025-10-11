@@ -43,7 +43,7 @@
   "custom" : {
     "modmenu" : {
       "links" : {
-        "github" : "https://github.com/kotleni/pickuphud-minecraft",
+        "modrinth" : "https://modrinth.com/project/pickup-hud",
         "discord" : "https://discord.gg/TXwQXBWR"
       },
       "update_checker": true
