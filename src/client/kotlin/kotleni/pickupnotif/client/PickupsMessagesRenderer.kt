@@ -1,5 +1,6 @@
 package kotleni.pickupnotif.client
 
+import kotleni.pickuphud.ModConfig
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.item.Item
@@ -28,6 +29,7 @@ object PickupsMessagesRenderer {
             val x = drawContext.scaledWindowWidth - width - padding
             val y = drawContext.scaledWindowHeight - height - (margin * index) - padding - 6
 
+            if(ModConfig.INSTANCE.isRenderItemIcon)
             when(message) {
                 is PickupMessage.Item -> drawContext.drawItem(message.stack, x - 20, y)
                 is PickupMessage.ExperienceOrb -> drawContext.drawItem(Items.EXPERIENCE_BOTTLE.defaultStack, x - 20, y)

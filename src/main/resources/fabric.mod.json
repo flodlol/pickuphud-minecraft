@@ -25,7 +25,8 @@
     ],
     "main": [
       "kotleni.pickupnotif.Pickupnotif"
-    ]
+    ],
+    "modmenu": [ "kotleni.pickuphud.ModMenuApiImpl" ]
   },
   "mixins": [
     "pickupnotif.mixins.json",
