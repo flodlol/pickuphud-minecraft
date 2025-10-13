@@ -23,15 +23,15 @@ data class ModSetting<T>(
 
 private val settings = listOf(
     ModSetting<Boolean>(
-        title = "Render items icon",
-        description = "...",
+        title = "Item icon",
+        description = "Render item icon near to the message item.",
         value = ModSettingValue.ValueBoolean(defaultValue = true),
         getValue = { cfg -> return@ModSetting cfg.isRenderItemIcon },
         setValue = { cfg, value -> cfg.isRenderItemIcon = value }
     ),
     ModSetting<Boolean>(
-        title = "Display experience orbs",
-        description = "...",
+        title = "Track experience orbs",
+        description = "Track and display messages when pickup experience orbs.",
         value = ModSettingValue.ValueBoolean(defaultValue = true),
         getValue = { cfg -> return@ModSetting cfg.isDisplayExperienceOrb },
         setValue = { cfg, value -> cfg.isDisplayExperienceOrb = value }
