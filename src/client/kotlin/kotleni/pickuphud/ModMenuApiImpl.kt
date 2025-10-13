@@ -84,7 +84,7 @@ class ModMenuApiImpl : ModMenuApi {
                 is ModSettingValue.ValueInt -> {
                     setting as ModSetting<Int>
                     general?.addEntry(entryBuilder?.startIntSlider(
-                        Text.literal("Numerical"),
+                        Text.literal(setting.title),
                         setting.getValue(modConfigCopy),
                         setting.value.min,
                         setting.value.max
