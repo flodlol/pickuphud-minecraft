@@ -17,8 +17,9 @@ object PickupsMessagesRenderer {
     }
 
     fun render(drawContext: DrawContext, textRenderer: TextRenderer, messages: List<PickupMessage>) {
-        messages.forEachIndexed { index, message ->
-            if(System.currentTimeMillis() - message.createTime > ModConfig.INSTANCE.messageTime) return@forEachIndexed
+        var renderedCount = 0
+        messages.forEach { message ->
+            if(System.currentTimeMillis() - message.createTime > ModConfig.INSTANCE.messageTime) return@forEach
 
             val line = generateLine(message)
             val margin = 16
@@ -27,7 +28,7 @@ object PickupsMessagesRenderer {
             val height = textRenderer.fontHeight
 
             val x = drawContext.scaledWindowWidth - width - padding
-            val y = drawContext.scaledWindowHeight - height - (margin * index) - padding - 6
+            val y = drawContext.scaledWindowHeight - height - (margin * renderedCount) - padding - 6
 
             if(ModConfig.INSTANCE.isRenderItemIcon)
             when(message) {
@@ -42,7 +43,9 @@ object PickupsMessagesRenderer {
                 y + (height / 2),
                 Colors.WHITE,
                 false
-            );
+            )
+
+            renderedCount += 1
         }
     }
 }
