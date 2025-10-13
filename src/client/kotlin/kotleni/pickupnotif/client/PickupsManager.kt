@@ -1,5 +1,6 @@
 package kotleni.pickupnotif.client
 
+import kotleni.pickuphud.ModConfig
 import net.minecraft.item.ItemStack
 
 class PickupsManager {
@@ -8,7 +9,7 @@ class PickupsManager {
     val allPickups: List<PickupMessage> get() = pickupMessages
 
     private fun cleanup() {
-        pickupMessages.removeIf { System.currentTimeMillis() - it.createTime >= 2000 }
+        pickupMessages.removeIf { System.currentTimeMillis() - it.createTime >= ModConfig.INSTANCE.messageTime }
     }
 
     fun addItemPickup(stack: ItemStack, totalItemsOfThisType: Int) {

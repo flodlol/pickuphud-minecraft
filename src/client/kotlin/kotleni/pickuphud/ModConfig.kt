@@ -15,11 +15,13 @@ import kotlin.io.path.writeText
 @Serializable
 data class ModConfig(
     var isRenderItemIcon: Boolean = true,
-    var isDisplayExperienceOrb: Boolean = true
+    var isDisplayExperienceOrb: Boolean = true,
+    var messageTime: Int = 1200,
 ) {
     fun apply(modConfig: ModConfig) {
         isRenderItemIcon = modConfig.isRenderItemIcon
         isDisplayExperienceOrb = modConfig.isDisplayExperienceOrb
+        messageTime = modConfig.messageTime
     }
 
     companion object {

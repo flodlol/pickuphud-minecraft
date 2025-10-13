@@ -18,7 +18,7 @@ object PickupsMessagesRenderer {
 
     fun render(drawContext: DrawContext, textRenderer: TextRenderer, messages: List<PickupMessage>) {
         messages.forEachIndexed { index, message ->
-            if(System.currentTimeMillis() - message.createTime > 2000) return@forEachIndexed
+            if(System.currentTimeMillis() - message.createTime > ModConfig.INSTANCE.messageTime) return@forEachIndexed
 
             val line = generateLine(message)
             val margin = 16
