@@ -1,5 +1,6 @@
 package kotleni.pickupnotif.client
 
+import kotleni.pickuphud.ModConfig
 import kotleni.pickupnotif.ExperienceOrbPickupCallback
 import kotleni.pickupnotif.ItemPickupCallback
 import net.fabricmc.api.ClientModInitializer
@@ -13,6 +14,8 @@ class PickupnotifClient : ClientModInitializer {
     private val pickupsManager = PickupsManager();
 
     override fun onInitializeClient() {
+        ModConfig.load()
+
         // client.player?.on
         HudRenderCallback.EVENT.register { drawContext, tickCounter ->
             PickupsMessagesRenderer.render(drawContext, client.textRenderer, pickupsManager.allPickups)

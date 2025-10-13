@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "2.2.20"
     id("fabric-loom") version "1.11-SNAPSHOT"
     id("maven-publish")
+    kotlin("plugin.serialization") version "2.2.0"
 }
 
 version = project.property("mod_version") as String
@@ -42,6 +43,7 @@ fabricApi {
 }
 
 repositories {
+    mavenCentral()
     maven {
         name = "Terraformers"
         url = URI("https://maven.terraformersmc.com/")
@@ -63,6 +65,8 @@ dependencies {
     modApi("me.shedaniel.cloth:cloth-config-fabric:${project.property("clothconfig_version")}") {
         exclude(group = "net.fabricmc.fabric-api")
     }
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 }
 
 tasks.processResources {

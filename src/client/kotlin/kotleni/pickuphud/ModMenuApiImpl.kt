@@ -46,6 +46,7 @@ class ModMenuApiImpl : ModMenuApi {
                 .setParentScreen(parent)
                 .setSavingRunnable {
                     ModConfig.INSTANCE.apply(modConfigCopy)
+                    ModConfig.save()
                 }
                 .setTitle(Text.literal("Pickup HUD Settings"))
             val entryBuilder = builder?.entryBuilder()
