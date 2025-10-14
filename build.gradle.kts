@@ -62,10 +62,6 @@ dependencies {
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")
 
     modImplementation("com.terraformersmc:modmenu:${project.property("modmenu_version")}")
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.property("clothconfig_version")}") {
-        exclude(group = "net.fabricmc.fabric-api")
-    }
-
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
 }
 
