@@ -3,10 +3,17 @@ package kotleni.pickupnotif.client
 import kotleni.pickuphud.ModConfig
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
+import net.minecraft.entity.boss.BossBar
 import net.minecraft.item.Item
 import net.minecraft.item.Items
 import net.minecraft.registry.Registries
+import net.minecraft.text.StringVisitable
+import net.minecraft.text.Style
+import net.minecraft.text.Text
+import net.minecraft.text.TextColor
 import net.minecraft.util.Colors
+import net.minecraft.util.Formatting
+import net.minecraft.util.Rarity
 
 object PickupsMessagesRenderer {
     private fun generateLine(message: PickupMessage): String {
@@ -23,6 +30,26 @@ object PickupsMessagesRenderer {
             }
             is PickupMessage.ExperienceOrb -> "Experience +${message.increaseCount} (${message.totalCount})"
         };
+    }
+
+    private fun getRarityColor(message: PickupMessage): Int {
+        return when(message) {
+            is PickupMessage.Item -> when(message.stack.rarity) {
+                Rarity.COMMON -> Colors.WHITE
+                Rarity.UNCOMMON -> Colors.YELLOW
+                Rarity.RARE -> Colors.CYAN
+                Rarity.EPIC -> Colors.PURPLE
+                else -> Colors.WHITE
+            }
+            is PickupMessage.ExperienceOrb -> Colors.WHITE
+        } ?: Colors.WHITE
+    }
+
+    private fun getRarityFormatting(message: PickupMessage): Formatting {
+        return when(message) {
+            is PickupMessage.Item -> message.stack.rarity.formatting
+            is PickupMessage.ExperienceOrb -> Formatting.WHITE
+        } ?: Formatting.WHITE
     }
 
     fun render(drawContext: DrawContext, textRenderer: TextRenderer, messages: List<PickupMessage>) {
@@ -51,9 +78,14 @@ object PickupsMessagesRenderer {
                 is PickupMessage.ExperienceOrb -> drawContext.drawItem(Items.EXPERIENCE_BOTTLE.defaultStack, x - 20, y)
             }
 
+            val text = if(ModConfig.INSTANCE.isColorizeTextByRarity)
+                Text.literal(line).formatted(getRarityFormatting(message))
+            else
+                Text.literal(line)
+
             drawContext.drawText(
                 textRenderer,
-                line,
+                text,
                 x,
                 y + (height / 2),
                 Colors.WHITE,

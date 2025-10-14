@@ -17,6 +17,7 @@ data class ModConfig(
     var messageTime: Int = 1200,
     var maxMessagesOnScreen: Int = 12,
     var isDisplayTotalCountInStacks: Boolean = false,
+    var isColorizeTextByRarity: Boolean = true,
 ) {
     fun apply(modConfig: ModConfig) {
         isRenderItemIcon = modConfig.isRenderItemIcon
@@ -24,6 +25,7 @@ data class ModConfig(
         messageTime = modConfig.messageTime
         maxMessagesOnScreen = modConfig.maxMessagesOnScreen
         isDisplayTotalCountInStacks = modConfig.isDisplayTotalCountInStacks
+        isColorizeTextByRarity = modConfig.isColorizeTextByRarity
     }
 
     companion object {

@@ -9,6 +9,13 @@ val renderingSettings = listOf(
         setValue = { cfg, value -> cfg.isRenderItemIcon = value }
     ),
     ModSetting(
+        title = "Display rarity by text color",
+        description = "Display item rarity by text color.",
+        value = ModSettingValue.ValueBoolean(defaultValue = true),
+        getValue = { cfg -> return@ModSetting cfg.isColorizeTextByRarity },
+        setValue = { cfg, value -> cfg.isColorizeTextByRarity = value }
+    ),
+    ModSetting(
         title = "Total count in stacks",
         description = "Display total count in stacks + items if possible.",
         value = ModSettingValue.ValueBoolean(defaultValue = false),
