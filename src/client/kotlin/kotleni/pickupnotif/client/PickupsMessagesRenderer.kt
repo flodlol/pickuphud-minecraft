@@ -21,6 +21,12 @@ object PickupsMessagesRenderer {
         messages.forEach { message ->
             if(System.currentTimeMillis() - message.createTime > ModConfig.INSTANCE.messageTime) return@forEach
 
+            if(renderedCount >= ModConfig.INSTANCE.maxMessagesOnScreen) {
+                // Reset timer for not displayed messages
+                message.createTime = System.currentTimeMillis()
+                return@forEach
+            }
+
             val line = generateLine(message)
             val margin = 16
             val padding = 6

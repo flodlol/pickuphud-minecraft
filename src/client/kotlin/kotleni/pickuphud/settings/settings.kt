@@ -24,5 +24,12 @@ val behaviorSettings = listOf(
         value = ModSettingValue.ValueInt(defaultValue = 1200, min = 400, max = 4000),
         getValue = { cfg -> return@ModSetting cfg.messageTime },
         setValue = { cfg, value -> cfg.messageTime = value }
-    )
+    ),
+    ModSetting(
+        title = "Messages on screen",
+        description = "Count of max displayed messages on screen at the same time.",
+        value = ModSettingValue.ValueInt(defaultValue = 12, min = 1, max = 32),
+        getValue = { cfg -> return@ModSetting cfg.maxMessagesOnScreen },
+        setValue = { cfg, value -> cfg.maxMessagesOnScreen = value }
+    ),
 )

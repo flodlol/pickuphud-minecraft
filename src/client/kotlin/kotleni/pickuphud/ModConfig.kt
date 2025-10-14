@@ -17,11 +17,13 @@ data class ModConfig(
     var isRenderItemIcon: Boolean = true,
     var isDisplayExperienceOrb: Boolean = true,
     var messageTime: Int = 1200,
+    var maxMessagesOnScreen: Int = 12,
 ) {
     fun apply(modConfig: ModConfig) {
         isRenderItemIcon = modConfig.isRenderItemIcon
         isDisplayExperienceOrb = modConfig.isDisplayExperienceOrb
         messageTime = modConfig.messageTime
+        maxMessagesOnScreen = modConfig.maxMessagesOnScreen
     }
 
     companion object {
