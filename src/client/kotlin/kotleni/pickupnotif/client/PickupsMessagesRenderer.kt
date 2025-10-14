@@ -11,7 +11,16 @@ import net.minecraft.util.Colors
 object PickupsMessagesRenderer {
     private fun generateLine(message: PickupMessage): String {
         return when(message) {
-            is PickupMessage.Item -> "${message.stack.itemName.string} +${message.increaseCount} (${message.totalCount})"
+            is PickupMessage.Item -> {
+                val stacksCount = (message.totalCount.toDouble() / message.stack.item.maxCount).toInt()
+                val partialStackCount = message.totalCount - (stacksCount * message.stack.item.maxCount)
+                val totalCount = if(ModConfig.INSTANCE.isDisplayTotalCountInStacks && stacksCount > 0)
+                    "$stacksCount ${if(stacksCount == 1) "stack" else "stacks"}${if(partialStackCount == 0) "" else " + $partialStackCount"}"
+                else
+                    message.totalCount.toString()
+
+                return "${message.stack.itemName.string} +${message.increaseCount} ($totalCount)"
+            }
             is PickupMessage.ExperienceOrb -> "Experience +${message.increaseCount} (${message.totalCount})"
         };
     }

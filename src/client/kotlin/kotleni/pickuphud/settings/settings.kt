@@ -8,6 +8,13 @@ val renderingSettings = listOf(
         getValue = { cfg -> return@ModSetting cfg.isRenderItemIcon },
         setValue = { cfg, value -> cfg.isRenderItemIcon = value }
     ),
+    ModSetting(
+        title = "Total count in stacks",
+        description = "Display total count in stacks + items if possible.",
+        value = ModSettingValue.ValueBoolean(defaultValue = false),
+        getValue = { cfg -> return@ModSetting cfg.isDisplayTotalCountInStacks },
+        setValue = { cfg, value -> cfg.isDisplayTotalCountInStacks = value }
+    ),
 )
 
 val behaviorSettings = listOf(

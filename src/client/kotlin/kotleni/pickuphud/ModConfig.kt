@@ -3,12 +3,10 @@ package kotleni.pickuphud
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import net.fabricmc.loader.api.FabricLoader
-import java.io.File
 import java.nio.charset.Charset
 import kotlin.io.path.createDirectory
 import kotlin.io.path.exists
 import kotlin.io.path.isDirectory
-import kotlin.io.path.isWritable
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
 
@@ -18,12 +16,14 @@ data class ModConfig(
     var isDisplayExperienceOrb: Boolean = true,
     var messageTime: Int = 1200,
     var maxMessagesOnScreen: Int = 12,
+    var isDisplayTotalCountInStacks: Boolean = false,
 ) {
     fun apply(modConfig: ModConfig) {
         isRenderItemIcon = modConfig.isRenderItemIcon
         isDisplayExperienceOrb = modConfig.isDisplayExperienceOrb
         messageTime = modConfig.messageTime
         maxMessagesOnScreen = modConfig.maxMessagesOnScreen
+        isDisplayTotalCountInStacks = modConfig.isDisplayTotalCountInStacks
     }
 
     companion object {
