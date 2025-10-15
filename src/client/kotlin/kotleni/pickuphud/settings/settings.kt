@@ -22,6 +22,20 @@ val renderingSettings = listOf(
         getValue = { cfg -> return@ModSetting cfg.isDisplayTotalCountInStacks },
         setValue = { cfg, value -> cfg.isDisplayTotalCountInStacks = value }
     ),
+    ModSetting(
+        title = "Message padding",
+        description = "Padding inside of message item.",
+        value = ModSettingValue.ValueInt(defaultValue = 1, min = 0, max = 6),
+        getValue = { cfg -> return@ModSetting cfg.messagePadding },
+        setValue = { cfg, value -> cfg.messagePadding = value }
+    ),
+    ModSetting(
+        title = "Gap between messages",
+        description = "Gap between messages",
+        value = ModSettingValue.ValueInt(defaultValue = 2, min = 0, max = 6),
+        getValue = { cfg -> return@ModSetting cfg.gapBetweenMessages },
+        setValue = { cfg, value -> cfg.gapBetweenMessages = value }
+    ),
 )
 
 val behaviorSettings = listOf(

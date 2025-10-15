@@ -47,8 +47,8 @@ object PickupsMessagesRenderer {
             }
 
             // --- Configuration ---
-            val padding = 2
-            val gap = 2
+            val padding = ModConfig.INSTANCE.messagePadding
+            val gap = ModConfig.INSTANCE.gapBetweenMessages
             val textColor = Colors.WHITE
             val backgroundColor = Colors.DARK_GRAY
             val renderIcon = ModConfig.INSTANCE.isRenderItemIcon

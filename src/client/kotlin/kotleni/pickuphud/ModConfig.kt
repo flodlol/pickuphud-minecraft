@@ -18,6 +18,9 @@ data class ModConfig(
     var maxMessagesOnScreen: Int = 12,
     var isDisplayTotalCountInStacks: Boolean = false,
     var isColorizeTextByRarity: Boolean = true,
+
+    var messagePadding: Int = 1,
+    var gapBetweenMessages: Int = 2,
 ) {
     fun apply(modConfig: ModConfig) {
         isRenderItemIcon = modConfig.isRenderItemIcon
@@ -26,6 +29,9 @@ data class ModConfig(
         maxMessagesOnScreen = modConfig.maxMessagesOnScreen
         isDisplayTotalCountInStacks = modConfig.isDisplayTotalCountInStacks
         isColorizeTextByRarity = modConfig.isColorizeTextByRarity
+
+        messagePadding = modConfig.messagePadding
+        gapBetweenMessages = modConfig.gapBetweenMessages
     }
 
     companion object {
