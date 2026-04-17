@@ -18,13 +18,13 @@ Client-side HUD notifications for picked-up items and experience, with tracked-i
 - See item icon, display name, and full identifier.
 - Track / Untrack / Toggle / Clear actions.
 - Optional filtering:
-- Show only tracked items.
-- Play sound only when tracked items are picked up.
+  - Show only tracked items.
+  - Play sound only when tracked items are picked up.
 - Customizable HUD appearance:
-- Left/right and top/bottom alignment.
-- X/Y offsets.
-- Message/background opacity and shade.
-- Message count, duration, spacing, and icon display options.
+  - Left/right and top/bottom alignment.
+  - X/Y offsets.
+  - Message/background opacity and shade.
+  - Message count, duration, spacing, and icon display options.
 
 
 <p align="center">
@@ -46,21 +46,6 @@ Client-side HUD notifications for picked-up items and experience, with tracked-i
   <img src="./src/main/resources/media/hud-2.png"/>
   <img src="./src/main/resources/media/hud-3.png"/>
 </p>
-
-
-## Build
-
-```bash
-./gradlew build
-```
-
-If this repo has no local wrapper in your environment, run with any available Gradle wrapper and set project path:
-
-```bash
-/path/to/gradlew -p /absolute/path/to/pickuphud-2.0.0 build
-```
-
-Built jars are produced in `build/libs/`.
 
 
 ## Suggestions & Support
