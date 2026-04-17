@@ -28,7 +28,7 @@ Client-side HUD notifications for picked-up items and experience, with tracked-i
 
 
 <p align="center">
-  <img src="./src/main/resources/media/example.png" width=“100"/>
+  <img src="./src/main/resources/media/example.png" style="width:380px;" />
 </p>
 
 
@@ -42,9 +42,9 @@ Client-side HUD notifications for picked-up items and experience, with tracked-i
 ## Settings
 
 <p align="center">
-  <img src="./src/main/resources/media/hud-1.png" width=“300"/>
-  <img src="./src/main/resources/media/hud-2.png" width=“300"/>
-  <img src="./src/main/resources/media/hud-3.png" width=“300"/>
+  <img src="./src/main/resources/media/hud-1.png"/>
+  <img src="./src/main/resources/media/hud-2.png"/>
+  <img src="./src/main/resources/media/hud-3.png"/>
 </p>
 
 
