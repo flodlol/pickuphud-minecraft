@@ -77,6 +77,13 @@ class TrackedItemsScreen(
         refreshFiltered()
     }
 
+    private fun ensureTracked(id: Identifier) {
+        if (trackedIds.add(id)) {
+            syncToConfig()
+            refreshFiltered()
+        }
+    }
+
     private fun rebuildWidgets() {
         clearChildren()
 
@@ -95,7 +102,7 @@ class TrackedItemsScreen(
             addDrawableChild(
                 ButtonWidget.Builder(Text.empty()) {
                     selectedId = id
-                    toggleTracked(id)
+                    ensureTracked(id)
                     rebuildWidgets()
                 }
                     .dimensions(listX, listY + idx * rowHeight, listWidth, rowHeight)
@@ -178,8 +185,8 @@ class TrackedItemsScreen(
             context.drawTextWithShadow(textRenderer, Text.literal(id.toString()), listX + 24, y + 14, 0xFFA8A8A8.toInt())
             context.drawText(
                 textRenderer,
-                Text.literal(if (isTracked) "TRACKED" else "UNTRACKED"),
-                listX + listWidth - 76,
+                Text.literal(if (isTracked) "TOGGLED" else "UNTOGGLED"),
+                listX + listWidth - 88,
                 y + 8,
                 if (isTracked) 0xFFA7FFA7.toInt() else 0xFFFFB7B7.toInt(),
                 false,
@@ -196,7 +203,7 @@ class TrackedItemsScreen(
         )
         context.drawCenteredTextWithShadow(
             textRenderer,
-            Text.literal("Click any item row to toggle tracking"),
+            Text.literal("Click any item row to track item"),
             width / 2,
             height - 62,
             0xFFCFCFCF.toInt(),

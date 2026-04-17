@@ -69,9 +69,9 @@ class ModSettingsScreen(private val parent: Screen?) : Screen(Text.literal("")) 
 
         addDrawableChild(
             CyclingButtonWidget.onOffBuilder(
-                Text.literal("Disabled").formatted(Formatting.RED),
                 Text.literal("Enabled").formatted(Formatting.GREEN),
-                !setting.getValue(modConfigCopy),
+                Text.literal("Disabled").formatted(Formatting.RED),
+                setting.getValue(modConfigCopy),
             )
                 .omitKeyText()
                 .build(
@@ -81,7 +81,7 @@ class ModSettingsScreen(private val parent: Screen?) : Screen(Text.literal("")) 
                     20,
                     Text.empty(),
                 ) { _: CyclingButtonWidget<Boolean?>?, value: Boolean ->
-                    setting.setValue(modConfigCopy, !value)
+                    setting.setValue(modConfigCopy, value)
                 }
         )
 
@@ -199,6 +199,14 @@ class ModSettingsScreen(private val parent: Screen?) : Screen(Text.literal("")) 
             this.width / 2,
             32,
             Colors.WHITE,
+        )
+
+        context.drawCenteredTextWithShadow(
+            textRenderer,
+            Text.literal("Tip: Change 'Open Tracked Items' in Controls -> Key Binds -> Pickup HUD"),
+            this.width / 2,
+            this.height - 68,
+            0xD6D6D6,
         )
     }
 

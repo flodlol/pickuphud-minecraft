@@ -90,6 +90,7 @@ class PickupsTracker(
                 if (volume > 0f) {
                     // Strong audible ding for rare tracked drops (e.g. wither skull farming).
                     player.playSound(SoundEvents.ENTITY_PLAYER_LEVELUP, volume.coerceAtMost(1.7f), 1.8f)
+                    player.playSound(SoundEvents.BLOCK_NOTE_BLOCK_BELL.value(), volume.coerceAtMost(1.7f), 1.95f)
                 }
             }
         }
