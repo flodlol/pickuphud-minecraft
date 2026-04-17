@@ -57,7 +57,7 @@ Client-side HUD notifications for picked-up items and experience, with tracked-i
 If this repo has no local wrapper in your environment, run with any available Gradle wrapper and set project path:
 
 ```bash
-/path/to/gradlew -p /absolute/path/to/pickuphud-1.2.0-beta build
+/path/to/gradlew -p /absolute/path/to/pickuphud-2.0.0 build
 ```
 
 Built jars are produced in `build/libs/`.
