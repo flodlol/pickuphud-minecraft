@@ -4,7 +4,7 @@ import kotleni.pickuphud.ModConfig
 import net.minecraft.item.ItemStack
 
 class PickupsManager {
-    private var pickupMessages: ArrayList<PickupMessage> = arrayListOf();
+    private var pickupMessages: ArrayList<PickupMessage> = arrayListOf()
 
     val allPickups: List<PickupMessage> get() = pickupMessages
 
@@ -15,20 +15,27 @@ class PickupsManager {
     fun addItemPickup(stack: ItemStack, totalItemsOfThisType: Int) {
         cleanup()
 
-        val prevMessage = pickupMessages.filter { it is PickupMessage.Item }
-            .find { (it as PickupMessage.Item).stack.itemName == stack.itemName } as? PickupMessage.Item?
+        var prevMessage: PickupMessage.Item? = null
+        for (message in pickupMessages) {
+            if (message !is PickupMessage.Item) continue
+            if (!ItemStack.areItemsAndComponentsEqual(message.stack, stack)) continue
+            prevMessage = message
+            break
+        }
 
-        if(prevMessage != null) {
+        if (prevMessage != null) {
             prevMessage.increaseCount += stack.count
             prevMessage.totalCount = totalItemsOfThisType
             prevMessage.createTime = System.currentTimeMillis()
         } else {
-            pickupMessages.add(PickupMessage.Item(
-                stack,
-                stack.count,
-                totalItemsOfThisType,
-                System.currentTimeMillis(),
-            ))
+            pickupMessages.add(
+                PickupMessage.Item(
+                    stack.copy(),
+                    stack.count,
+                    totalItemsOfThisType,
+                    System.currentTimeMillis(),
+                )
+            )
         }
     }
 
@@ -37,16 +44,18 @@ class PickupsManager {
 
         val prevMessage = pickupMessages.find { it is PickupMessage.ExperienceOrb } as? PickupMessage.ExperienceOrb?
 
-        if(prevMessage != null) {
+        if (prevMessage != null) {
             prevMessage.increaseCount += experience
             prevMessage.totalCount = totalCount
             prevMessage.createTime = System.currentTimeMillis()
         } else {
-            pickupMessages.add(PickupMessage.ExperienceOrb(
-                experience,
-                totalCount,
-                System.currentTimeMillis(),
-            ))
+            pickupMessages.add(
+                PickupMessage.ExperienceOrb(
+                    experience,
+                    totalCount,
+                    System.currentTimeMillis(),
+                )
+            )
         }
     }
 }

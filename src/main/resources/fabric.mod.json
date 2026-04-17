@@ -7,6 +7,9 @@
   "authors": [
     "kotleni"
   ],
+  "contributors": [
+    "flodlol"
+  ],
   "contact": {
     "email" : "yavarenikya@gmail.com",
     "homepage" : "https://github.com/kotleni/pickuphud-minecraft",
@@ -39,7 +42,7 @@
     "fabricloader": ">=${loader_version}",
     "fabric-language-kotlin": ">=${kotlin_loader_version}",
     "fabric": "*",
-    "minecraft": "${minecraft_version}"
+    "minecraft": "${minecraft_version_range}"
   },
   "custom" : {
     "modmenu" : {
