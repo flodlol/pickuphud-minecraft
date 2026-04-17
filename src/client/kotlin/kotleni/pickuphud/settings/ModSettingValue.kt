@@ -1,14 +1,18 @@
 package kotleni.pickuphud.settings
 
-sealed class ModSettingValue(
-) {
+sealed class ModSettingValue {
     data class ValueBoolean(
         val defaultValue: Boolean,
-    ): ModSettingValue()
+    ) : ModSettingValue()
 
     data class ValueInt(
         val defaultValue: Int,
         val min: Int,
         val max: Int,
-    ): ModSettingValue()
+    ) : ModSettingValue()
+
+    data class ValueString(
+        val defaultValue: String,
+        val maxLength: Int,
+    ) : ModSettingValue()
 }

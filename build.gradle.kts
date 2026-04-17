@@ -18,7 +18,6 @@ base {
 
 val targetJavaVersion = 21
 java {
-    toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
     // If you remove this line, sources will not be generated.
@@ -66,16 +65,23 @@ dependencies {
 }
 
 tasks.processResources {
+    val minecraftVersion = project.property("minecraft_version").toString()
+    val minecraftVersionRange = project.property("minecraft_version_range").toString()
+    val loaderVersion = project.property("loader_version").toString()
+    val kotlinLoaderVersion = project.property("kotlin_loader_version").toString()
+
     inputs.property("version", project.version)
-    inputs.property("minecraft_version", project.property("minecraft_version"))
-    inputs.property("loader_version", project.property("loader_version"))
+    inputs.property("minecraft_version", minecraftVersion)
+    inputs.property("minecraft_version_range", minecraftVersionRange)
+    inputs.property("loader_version", loaderVersion)
     filteringCharset = "UTF-8"
 
     filesMatching("fabric.mod.json") {
         expand("version" to project.version,
-            "minecraft_version" to project.property("minecraft_version"),
-            "loader_version" to project.property("loader_version"),
-            "kotlin_loader_version" to project.property("kotlin_loader_version"))
+            "minecraft_version" to minecraftVersion,
+            "minecraft_version_range" to minecraftVersionRange,
+            "loader_version" to loaderVersion,
+            "kotlin_loader_version" to kotlinLoaderVersion)
     }
 }
 

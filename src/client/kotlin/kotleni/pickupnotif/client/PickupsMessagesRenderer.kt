@@ -5,63 +5,81 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.item.Items
 import net.minecraft.text.Text
-import net.minecraft.util.Colors
 import net.minecraft.util.Formatting
 import kotlin.math.max
 
 object PickupsMessagesRenderer {
-    private fun generateLine(message: PickupMessage): String {
-        return when(message) {
+    private fun colorInt(red: Int, green: Int, blue: Int, alpha: Int): Int {
+        val a = alpha.coerceIn(0, 255)
+        val r = red.coerceIn(0, 255)
+        val g = green.coerceIn(0, 255)
+        val b = blue.coerceIn(0, 255)
+        return (a shl 24) or (r shl 16) or (g shl 8) or b
+    }
+
+    private fun generateLine(message: PickupMessage, config: ModConfig): String {
+        return when (message) {
             is PickupMessage.Item -> {
                 val stacksCount = (message.totalCount.toDouble() / message.stack.item.maxCount).toInt()
                 val partialStackCount = message.totalCount - (stacksCount * message.stack.item.maxCount)
-                val totalCount = if(ModConfig.INSTANCE.isDisplayTotalCountInStacks && stacksCount > 0)
-                    "$stacksCount ${if(stacksCount == 1) "stack" else "stacks"}${if(partialStackCount == 0) "" else " + $partialStackCount"}"
-                else
+                val totalCount = if (config.isDisplayTotalCountInStacks && stacksCount > 0) {
+                    "$stacksCount ${if (stacksCount == 1) "stack" else "stacks"}${if (partialStackCount == 0) "" else " + $partialStackCount"}"
+                } else {
                     message.totalCount.toString()
+                }
 
-                return "${message.stack.itemName.string} +${message.increaseCount} ($totalCount)"
+                "${message.stack.name.string} +${message.increaseCount} ($totalCount)"
             }
+
             is PickupMessage.ExperienceOrb -> "Experience +${message.increaseCount} (${message.totalCount})"
         }
     }
 
     private fun getRarityFormatting(message: PickupMessage): Formatting {
-        return when(message) {
+        return when (message) {
             is PickupMessage.Item -> message.stack.rarity.formatting
-            is PickupMessage.ExperienceOrb -> Formatting.WHITE
+            is PickupMessage.ExperienceOrb -> Formatting.AQUA
         } ?: Formatting.WHITE
     }
 
-    fun render(drawContext: DrawContext, textRenderer: TextRenderer, messages: List<PickupMessage>) {
+    fun render(
+        drawContext: DrawContext,
+        textRenderer: TextRenderer,
+        messages: List<PickupMessage>,
+        config: ModConfig = ModConfig.INSTANCE,
+    ) {
         var yOffset = 0
         var renderedCount = 0
-        val screenMargin = 4 // A small margin from the screen edges
 
-        messages.forEach { message ->
-            if (System.currentTimeMillis() - message.createTime > ModConfig.INSTANCE.messageTime) return@forEach
+        for (message in messages) {
+            if (System.currentTimeMillis() - message.createTime > config.messageTime) continue
 
-            if (renderedCount >= ModConfig.INSTANCE.maxMessagesOnScreen) {
+            if (renderedCount >= config.maxMessagesOnScreen) {
                 message.createTime = System.currentTimeMillis()
-                return@forEach
+                continue
             }
 
-            // --- Configuration ---
-            val padding = ModConfig.INSTANCE.messagePadding
-            val gap = ModConfig.INSTANCE.gapBetweenMessages
-            val textColor = Colors.WHITE
-            val backgroundColor = Colors.DARK_GRAY
-            val renderIcon = ModConfig.INSTANCE.isRenderItemIcon
+            val padding = config.messagePadding
+            val gap = config.gapBetweenMessages
+
+            val textColor = -1
+            val backgroundColor = colorInt(
+                config.messageBackgroundShade,
+                config.messageBackgroundShade,
+                config.messageBackgroundShade,
+                config.messageBackgroundOpacity,
+            )
+            val textBackgroundColor = colorInt(0, 0, 0, config.textBackgroundOpacity)
+
+            val renderIcon = config.isRenderItemIcon
             val iconScale = 0.75f
 
-            // --- Dimensions ---
-            val line = generateLine(message)
+            val line = generateLine(message, config)
             val textWidth = textRenderer.getWidth(line)
             val textHeight = textRenderer.fontHeight
 
-            val baseItemSize = 16 // The item's original size
-            val scaledItemSize = (baseItemSize * iconScale).toInt() // The new, smaller size
-
+            val baseItemSize = 16
+            val scaledItemSize = (baseItemSize * iconScale).toInt()
             val iconTextGap = 4
             val iconAreaWidth = if (renderIcon) scaledItemSize + iconTextGap else 0
 
@@ -69,53 +87,69 @@ object PickupsMessagesRenderer {
             val backgroundHeight = contentHeight + (padding * 2)
             val backgroundWidth = textWidth + iconAreaWidth + (padding * 2)
 
-            // --- Positions ---
-            val backgroundX = drawContext.scaledWindowWidth - backgroundWidth - screenMargin
-            val backgroundY = drawContext.scaledWindowHeight - backgroundHeight - yOffset - screenMargin
+            val maxX = max(drawContext.scaledWindowWidth - backgroundWidth, 0)
+            val maxY = max(drawContext.scaledWindowHeight - backgroundHeight, 0)
 
-            // Draw background
-            drawContext.fill(backgroundX, backgroundY, backgroundX + backgroundWidth, backgroundY + backgroundHeight, backgroundColor)
+            val horizontalOffset = max(config.hudOffsetX, 0)
+            val verticalOffset = max(config.hudOffsetY, 0)
 
-            // --- Draw Icon with Scaling ---
+            val rawX = if (config.isHudRightAligned) {
+                drawContext.scaledWindowWidth - backgroundWidth - horizontalOffset
+            } else {
+                horizontalOffset
+            }
+
+            val rawY = if (config.isHudBottomAligned) {
+                drawContext.scaledWindowHeight - backgroundHeight - verticalOffset - yOffset
+            } else {
+                verticalOffset + yOffset
+            }
+
+            val backgroundX = rawX.coerceIn(0, maxX)
+            val backgroundY = rawY.coerceIn(0, maxY)
+
+            if (config.messageBackgroundOpacity > 0) {
+                drawContext.fill(
+                    backgroundX,
+                    backgroundY,
+                    backgroundX + backgroundWidth,
+                    backgroundY + backgroundHeight,
+                    backgroundColor,
+                )
+            }
+
             if (renderIcon) {
                 val iconX = backgroundX + padding
                 val iconY = backgroundY + (backgroundHeight / 2) - (scaledItemSize / 2)
-
                 val matrices = drawContext.matrices
-                matrices.pushMatrix() // Save the current matrix state
 
-                // We need to translate to the icon's position, scale, and then draw at (0,0)
+                matrices.pushMatrix()
                 matrices.translate(iconX.toFloat(), iconY.toFloat())
                 matrices.scale(iconScale, iconScale)
 
-                // Draw the item at the new, scaled-down origin
                 when (message) {
                     is PickupMessage.Item -> drawContext.drawItem(message.stack, 0, 0)
                     is PickupMessage.ExperienceOrb -> drawContext.drawItem(Items.EXPERIENCE_BOTTLE.defaultStack, 0, 0)
                 }
 
-                matrices.popMatrix() // Restore the matrix to its original state
+                matrices.popMatrix()
             }
 
-            // --- Draw Text ---
-            val text = if(ModConfig.INSTANCE.isColorizeTextByRarity)
+            val text = if (config.isColorizeTextByRarity) {
                 Text.literal(line).formatted(getRarityFormatting(message))
-            else
+            } else {
                 Text.literal(line)
+            }
 
             val textX = backgroundX + padding + iconAreaWidth
             val textY = backgroundY + (backgroundHeight / 2) - (textHeight / 2)
 
-            drawContext.drawText(
-                textRenderer,
-                text,
-                textX,
-                textY,
-                textColor,
-                true // shadow
-            )
+            if (config.textBackgroundOpacity > 0) {
+                drawContext.fill(textX - 1, textY - 1, textX + textWidth + 1, textY + textHeight + 1, textBackgroundColor)
+            }
 
-            // Update offset
+            drawContext.drawText(textRenderer, text, textX, textY, textColor, true)
+
             yOffset += backgroundHeight + gap
             renderedCount++
         }
